@@ -1,12 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <time.h>
 
 int nParo;
 
 void* routine(void *arg) {
-
-		
 		int numero = *(int*) arg;
 		
 		int i=0;
@@ -20,24 +19,18 @@ void* routine(void *arg) {
 		}
 
 		for(i=1; i<=multiplos1/2; i++){
-			if(numero % i == 0){
+			if(multiplos1 % i == 0){
 				multiplos2=multiplos2+i;
 			}
 		}
 
-		// if (numero==220)
-		// {
-		// 	printf("\n Llego al %d \n Multiplos 1: %d \n multiplos 2: %d \n ", numero,multiplos1, multiplos2);
-			
-		// }
-		// if (numero==284)
-		// {
-		// 	printf("\n Llego al %d \n Multiplos 1: %d \n multiplos 2: %d \n ", numero,multiplos1, multiplos2);
-			
-		// }
+		if (numero==220)
+		{
+			printf("numero: ");
+		}
 		
 
-		if (numero==220 || numero==284)
+		if (numero==multiplos2 && numero<multiplos1)
 		{
 			multiplos1=0;
 			multiplos2=0;
@@ -50,11 +43,11 @@ void* routine(void *arg) {
 				}
 			}
 
-			printf(" que suman: %d \n", multiplos1);
-			printf("Los divisiores propios de %d son: ", multiplos1);
+			printf(" que suman: %d ", multiplos1);
+			printf("\nLos divisiores propios de %d son: ", multiplos1);
 
 			for(i=1; i<=multiplos1/2; i++){
-				if(numero % i == 0){
+				if(multiplos1 % i == 0){
 					multiplos2=multiplos2+i;
 					printf("%d, ",i);
 				}
@@ -70,20 +63,21 @@ int main(int argc, char* argv[]) {
     pthread_t th1,th2;
 
     int i,h,temp;
-    printf("Introduce un numero: ");
-	// scanf("%d", &nParo);
-	nParo=498;
-	printf("numero ingresado: %d", nParo);
+    
+	printf("Introduce un numero: ");
+	scanf("%d", &nParo);
 	
 
-	for (h = 0; h < nParo;)
+	for (h = 1; h < nParo;)
 	{
 		
 		if (pthread_create(&th1, NULL, &routine, &h) != 0) {
 			perror("Failed to create thread");
 			return 1;
 		}
+
 		temp=h+1;
+		
 		if (pthread_create(&th2, NULL, &routine, &(temp)) != 0) {
 			perror("Failed to create thread");
 			return 1;
@@ -103,6 +97,3 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
-
-
-
